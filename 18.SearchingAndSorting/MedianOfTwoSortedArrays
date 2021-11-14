@@ -1,0 +1,84 @@
+import java.util.*;
+import java.io.*;
+
+public class MedianOfTwoSortedArrays {
+
+    public static double find(int[]a,int[]b) {
+        int n1 = a.length;
+        int n2 = b.length;
+        if (n1>n2) {
+            int[] temp = a;
+            a = b;
+            b = temp;
+            int q = 0;
+            q=n1;
+            n1 = n2;
+            n2 = q;
+        }
+
+        int lo=0;
+        int hi=n1;
+        int te = n1+n2;
+        int al=0;
+        int bl=0;
+        int alm1=0;
+        int blm1=0;
+        int count=0;
+
+        while(lo<=hi){
+            count+=1;
+
+            int ali = (lo+hi)/2; //ali -> a left index
+            int bli = (te+1)/2 - ali; // To Manage odd and even both
+            alm1 = ali==0 ? Integer.MIN_VALUE : a[ali-1]; // alm1 -> a left minu 1 value in array
+            al = ali == n1 ? Integer.MAX_VALUE : a[ali];  // al -> a left value in array
+            blm1 = bli==0 ? Integer.MIN_VALUE : b[bli-1]; // blm1 -> b left minu 1 value in array
+            bl = bli == n2 ? Integer.MAX_VALUE : b[bli];  // bl -> b left value in array
+
+            if(alm1<bl && blm1<al){
+                double median = 0.0;
+
+                if(te%2==0) {
+                    median = (Math.max(alm1, blm1) + Math.min(al, bl)) / 2.0;
+
+                }
+
+                else {
+                    median = Math.max(alm1, blm1);
+
+                }
+                return median;
+            }
+            else if(blm1>al){
+                lo = ali + 1;
+            }
+            else {
+                hi = ali - 1;
+            }
+        }
+
+        return 0.0;
+    }
+
+    public static void main(String[]args) {
+        Scanner scn = new Scanner(System.in);
+
+        //input work
+        int n1 = scn.nextInt();
+        int[]a = new int[n1];
+
+        for(int i=0;i < n1;i++){
+            a[i] = scn.nextInt();
+        }
+
+        int n2 = scn.nextInt();
+        int[]b = new int[n2];
+
+        for(int i=0; i < n2;i++) {
+            b[i] = scn.nextInt();
+        }
+
+        double median = find(a,b);
+        System.out.println(median);
+    }
+}
